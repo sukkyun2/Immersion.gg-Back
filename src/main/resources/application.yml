@@ -1,0 +1,20 @@
+riot:
+  api:
+    key: ${RIOT_API_KEY}
+    url:
+      kr: https://kr.api.riotgames.com
+      asia: https://asia.api.riotgames.com
+
+logging:
+  level:
+    com:
+      example:
+        openfeign: DEBUG
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            dismiss404: true
+            loggerLevel: FULL
