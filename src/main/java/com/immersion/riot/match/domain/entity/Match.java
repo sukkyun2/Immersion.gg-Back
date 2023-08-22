@@ -14,17 +14,17 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
+@Table(indexes = {
+        @Index(columnList = "matchId"),
+})
 public class Match {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String matchId;
 
     Timestamp gameStartTimestamp;
 
-    Timestamp gameDuration;
+    long gameDuration;
 
     Timestamp gameEndTimestamp;
 
@@ -34,7 +34,7 @@ public class Match {
 
     private String winTeam;
 
-    private Match(String matchId, Timestamp gameStartTimestamp, Timestamp gameDuration, Timestamp gameEndTimestamp, List<Participant> participants, String winTeam) {
+    private Match(String matchId, Timestamp gameStartTimestamp, long gameDuration, Timestamp gameEndTimestamp, List<Participant> participants, String winTeam) {
         this.matchId = matchId;
         this.gameStartTimestamp = gameStartTimestamp;
         this.gameDuration = gameDuration;
@@ -43,7 +43,7 @@ public class Match {
         this.winTeam = winTeam;
     }
 
-    public static Match of(String matchId, Timestamp gameStartTimestamp, Timestamp gameDuration, Timestamp gameEndTimestamp, List<Participant> participants, String winTeam) {
+    public static Match of(String matchId, Timestamp gameStartTimestamp, long gameDuration, Timestamp gameEndTimestamp, List<Participant> participants, String winTeam) {
         return new Match(
                 matchId,
                 gameStartTimestamp,

@@ -18,3 +18,4 @@ spring:
           default:
             dismiss404: true
             loggerLevel: FULL
+
