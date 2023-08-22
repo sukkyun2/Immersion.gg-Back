@@ -1,7 +1,6 @@
 package com.immersion.riot.match.infra.client;
 
-import com.immersion.riot.match.app.dto.MatchQueryResponse;
-import org.assertj.core.api.Assertions;
+import com.immersion.riot.match.infra.dto.MatchQueryResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

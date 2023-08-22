@@ -1,4 +1,4 @@
-package com.immersion.riot.match.app.dto;
+package com.immersion.riot.match.infra.dto;
 
 public record TeamDto(
         String teamId,

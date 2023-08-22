@@ -1,7 +1,7 @@
 package com.immersion.riot.match.infra.client;
 
 import com.immersion.riot.config.RiotFeignConfiguration;
-import com.immersion.riot.match.app.dto.MatchQueryResponse;
+import com.immersion.riot.match.infra.dto.MatchQueryResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
