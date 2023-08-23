@@ -5,8 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +13,16 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-@Table(indexes = {
-        @Index(columnList = "matchId"),
-})
 public class Match {
 
     @Id
     private String matchId;
 
-    Timestamp gameStartTimestamp;
+    private LocalDateTime gameStartTimestamp;
 
-    long gameDuration;
+    private long gameDuration;
 
-    Timestamp gameEndTimestamp;
+    private LocalDateTime gameEndTimestamp;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "matchId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -34,7 +30,7 @@ public class Match {
 
     private String winTeam;
 
-    private Match(String matchId, Timestamp gameStartTimestamp, long gameDuration, Timestamp gameEndTimestamp, List<Participant> participants, String winTeam) {
+    private Match(String matchId, LocalDateTime gameStartTimestamp, long gameDuration, LocalDateTime gameEndTimestamp, List<Participant> participants, String winTeam) {
         this.matchId = matchId;
         this.gameStartTimestamp = gameStartTimestamp;
         this.gameDuration = gameDuration;
@@ -43,7 +39,7 @@ public class Match {
         this.winTeam = winTeam;
     }
 
-    public static Match of(String matchId, Timestamp gameStartTimestamp, long gameDuration, Timestamp gameEndTimestamp, List<Participant> participants, String winTeam) {
+    public static Match of(String matchId, LocalDateTime gameStartTimestamp, long gameDuration, LocalDateTime gameEndTimestamp, List<Participant> participants, String winTeam) {
         return new Match(
                 matchId,
                 gameStartTimestamp,

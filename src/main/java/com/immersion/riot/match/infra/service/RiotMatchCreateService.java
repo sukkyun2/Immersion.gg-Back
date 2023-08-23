@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class RiotMatchService {
+public class RiotMatchCreateService {
 
     private final MatchClient matchClient;
     private final MatchRepository matchRepository;

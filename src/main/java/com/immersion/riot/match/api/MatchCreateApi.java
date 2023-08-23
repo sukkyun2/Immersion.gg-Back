@@ -1,37 +1,21 @@
 package com.immersion.riot.match.api;
 
-import com.immersion.riot.match.app.dto.ChampionStatResponse;
-import com.immersion.riot.match.app.dto.ChampionStatsDto;
-import com.immersion.riot.match.infra.service.RiotMatchService;
-import com.immersion.riot.match.query.ChampionStatQueryService;
+import com.immersion.riot.match.infra.service.RiotMatchCreateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class MatchCreateApi {
 
-    private final RiotMatchService riotMatchService;
-    private final ChampionStatQueryService championStatQueryService;
+    private final RiotMatchCreateService riotMatchService;
 
-    @GetMapping("/match/save/{puuid}")
+    @PostMapping("/match/{puuid}")
     public ResponseEntity<String> saveAllMatch(@PathVariable String puuid, long startTime, int count) {
         riotMatchService.saveAllMatch(puuid, startTime, count);
-        return ResponseEntity.ok().body("save!");
+        return ResponseEntity.ok("save complete!");
     }
-
-    @GetMapping("/match/most/{puuid}")
-    public ResponseEntity<List<ChampionStatResponse>> getMostChampionsByPuuid(@PathVariable String puuid) {
-        List<ChampionStatResponse> championStatResponses = championStatQueryService.getMostChampionByPuuid(puuid).stream()
-                .map(ChampionStatResponse::from)
-                .toList();
-
-        return ResponseEntity.ok().body(championStatResponses);
-    }
-
 }

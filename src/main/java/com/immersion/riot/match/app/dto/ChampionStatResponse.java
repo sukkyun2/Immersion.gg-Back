@@ -3,27 +3,35 @@ package com.immersion.riot.match.app.dto;
 public record ChampionStatResponse(
         String championName,
         String championImageUrl,
-        Long totalMatch,
-        Long winMatchCount,
-        Long loseMatchCount,
+        int totalMatch,
+        int winMatchCount,
+        int loseMatchCount,
+        double winRate,
         double killAvg,
         double deathAvg,
         double assistAvg,
         double kda
 ) {
 
-    public static ChampionStatResponse from(ChampionStatsDto dto) {
+    public static ChampionStatResponse from(ChampionStatsDto dto, String imageUrl) {
+
+        double winRate = (double) dto.winMatchCount() / dto.totalMatch() * 100;
+        double roundedKillAvg = Math.round(dto.killAvg() * 100) / 100.0;
+        double roundedDeathAvg = Math.round(dto.deathAvg() * 100) / 100.0;
+        double roundedAssistAvg = Math.round(dto.assistAvg() * 100) / 100.0;
+        double kda = Math.round((dto.killAvg() + dto.assistAvg()) / dto.deathAvg() * 100) / 100.0;
+
         return new ChampionStatResponse(
                 dto.championName(),
-                "http://ddragon.leagueoflegends.com/cdn/13.16.1/img/champion/" + dto.championName() + ".png",
-                dto.totalMatch(),
-                dto.winMatchCount(),
-                dto.loseMatchCount(),
-                dto.killAvg(),
-                dto.deathAvg(),
-                dto.assistAvg(),
-                Math.round(dto.killAvg() + dto.assistAvg() / dto.deathAvg() * 100) / 100.0
+                imageUrl + dto.championName() + ".png",
+                dto.totalMatch().intValue(),
+                dto.winMatchCount().intValue(),
+                dto.loseMatchCount().intValue(),
+                winRate,
+                roundedKillAvg,
+                roundedDeathAvg,
+                roundedAssistAvg,
+                kda
         );
     }
-
 }
