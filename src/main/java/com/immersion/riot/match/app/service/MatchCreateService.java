@@ -21,15 +21,12 @@ public class MatchCreateService {
     private final RiotMatchCreateService riotMatchCreateService;
     private final MatchUpdateHistoryRepository matchUpdateHistoryRepository;
 
-    private final static int MATCH_COUNT = 50;
-
     public void saveMatchList(String puuid) {
         if (!matchUpdateHistoryRepository.existsById(puuid)) {
             matchUpdateHistoryRepository.save(
                     MatchUpdateHistory.of(puuid, LocalDateTime.now())
             );
             MatchRequest matchRequest = MatchRequest.builder()
-                    .count(MATCH_COUNT)
                     .build();
             riotMatchCreateService.saveAllMatch(puuid, matchRequest);
             return;
@@ -38,7 +35,6 @@ public class MatchCreateService {
         MatchUpdateHistory history = matchUpdateHistoryRepository.getReferenceById(puuid);
         MatchRequest matchRequest = MatchRequest.builder()
                 .startTime(history.getLastUpdateTime().toEpochSecond(ZoneOffset.UTC))
-                .count(MATCH_COUNT)
                 .build();
         riotMatchCreateService.saveAllMatch(puuid, matchRequest);
 
