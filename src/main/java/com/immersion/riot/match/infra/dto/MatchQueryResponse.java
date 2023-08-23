@@ -13,9 +13,9 @@ public record MatchQueryResponse(
     public Match toEntity() {
         return Match.of(
                 metadata().matchId(),
-                info.gameStartTimestamp(),
+                info.gameStartTimestamp().toLocalDateTime(),
                 info.gameDuration(),
-                info.gameEndTimestamp(),
+                info.gameEndTimestamp().toLocalDateTime(),
                 info.participants().stream().map(participantDto ->
                         Participant.of(
                                 metadata().matchId(),
