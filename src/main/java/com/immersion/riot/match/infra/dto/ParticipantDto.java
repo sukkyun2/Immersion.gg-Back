@@ -1,5 +1,8 @@
 package com.immersion.riot.match.infra.dto;
 
+import com.immersion.riot.match.app.dto.MatchDto;
+import com.immersion.riot.match.domain.entity.Participant;
+
 public record ParticipantDto(
         int assists,
         int champLevel,
@@ -17,6 +20,9 @@ public record ParticipantDto(
         int participantId,
         String puuid,
         String summonerId,
+        int summoner1Id,
+        int summoner2Id,
+        PerksDto perks,
         String summonerName,
         int teamId,
         String teamPosition,
@@ -25,4 +31,34 @@ public record ParticipantDto(
         int visionScore,
         boolean win
 ) {
+    public static ParticipantDto from(Participant entity) {
+        return new ParticipantDto(
+                entity.getAssists(),
+                entity.getChampLevel(),
+                entity.getChampionId(),
+                entity.getChampionName(),
+                entity.getDeaths(),
+                entity.getItem0(),
+                entity.getItem1(),
+                entity.getItem2(),
+                entity.getItem3(),
+                entity.getItem4(),
+                entity.getItem5(),
+                entity.getItem6(),
+                entity.getKills(),
+                entity.getParticipantId(),
+                entity.getPuuid(),
+                entity.getSummonerId(),
+                entity.getSummoner1Id(),
+                entity.getSummoner2Id(),
+                PerksDto.of(entity.getPrimaryPerk(), entity.getSubPerk()),
+                entity.getSummonerName(),
+                entity.getTeamId(),
+                entity.getTeamPosition(),
+                entity.getTotalDamageDealtToChampions(),
+                entity.getTotalDamageTaken(),
+                entity.getVisionScore(),
+                entity.isWin()
+        );
+    }
 }
