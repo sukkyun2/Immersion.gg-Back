@@ -18,13 +18,10 @@ import java.util.List;
 public class MatchCreateApi {
 
     private final MatchCreateService matchCreateService;
-    private final MatchRepository matchRepository;
 
     @PostMapping("/match/{puuid}")
     public ResponseEntity<String> saveAllMatch(@PathVariable String puuid) {
-
         matchCreateService.saveMatchList(puuid);
-
         return ResponseEntity.ok("save complete!");
     }
 

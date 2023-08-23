@@ -22,9 +22,14 @@ public class MatchQueryApi {
 
     @GetMapping("/match/{puuid}")
     public ResponseEntity<List<MatchResponse>> getMatchListByPuuid(@PathVariable String puuid) {
-        List<MatchDto> matchList = matchQueryService.getMatchList(puuid);
 
-        List<MatchResponse> matchResponseList = matchList.stream()
+        List<MatchResponse> matchResponseList = dtoToResponse(matchQueryService.getMatchList(puuid));
+
+        return ResponseEntity.ok(matchResponseList);
+    }
+
+    private List<MatchResponse> dtoToResponse(List<MatchDto> matchList) {
+        return matchList.stream()
                 .map(matchDto -> MatchResponse.of(
                         formatGameDuration(matchDto.gameDuration()),
                         matchDto.participants().stream()
@@ -52,10 +57,7 @@ public class MatchQueryApi {
                                         imageUrlBuilderService.getItemImageUrl(participantDto.item5())
                                 )).toList(),
                         matchDto.winTeam())).toList();
-
-        return ResponseEntity.ok(matchResponseList);
     }
-
 
     private double caculateKDA(int kill, int death, int assist) {
         return Math.round((kill + assist) / (double) death * 100) / 100.0;
