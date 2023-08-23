@@ -4,10 +4,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +25,11 @@ public class UserRating {
     private int honorRating;
 
     public UserRating(Long ratedUserId, Long raterUserId, int skillRating, int mannerRating, int honorRating) {
+        this.ratedUserId = ratedUserId;
+        this.raterUserId = raterUserId;
+        this.skillRating = skillRating;
+        this.mannerRating = mannerRating;
+        this.honorRating = honorRating;
     }
 
-    public UserRating() {
-
-    }
 }

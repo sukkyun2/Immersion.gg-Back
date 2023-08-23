@@ -1,4 +1,4 @@
-package com.immersion.riot.userRating.app;
+package com.immersion.riot.common.app;
 
 public class NoDataException extends RuntimeException {
 }
