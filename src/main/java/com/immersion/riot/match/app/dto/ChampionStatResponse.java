@@ -23,7 +23,7 @@ public record ChampionStatResponse(
 
         return new ChampionStatResponse(
                 dto.championName(),
-                imageUrl + dto.championName() + ".png",
+                imageUrl,
                 dto.totalMatch().intValue(),
                 dto.winMatchCount().intValue(),
                 dto.loseMatchCount().intValue(),
