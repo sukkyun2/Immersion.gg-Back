@@ -1,5 +1,6 @@
 package com.immersion.riot.spectator.infra;
 import com.immersion.riot.config.RiotFeignConfiguration;
+import com.immersion.riot.spectator.app.SpectatorQueryResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,5 +11,5 @@ import java.util.List;
 
 public interface SpectatorClient {
     @GetMapping("/lol/spectator/v4/active-games/by-summoner/{encryptedSummonerId}")
-    List<String> getSpectator(@PathVariable String encryptedSummonerId);
+    SpectatorQueryResponse getSpectator(@PathVariable String encryptedSummonerId);
 }
