@@ -61,7 +61,17 @@ public class UserRatingViewService {
         return totalHonorRating / ratings.size();
     }
 
-    public List<UserRating> getUserRatings(Long userId) {
-        return userRatingRepository.findByRatedUserId(userId);
+    public List<Double> getUserRating(Long userId) {
+        List<Double> userRating;
+
+        userRating.add(getSkillRating(userId));
+        userRating.add(getAverageMannerRating(userId));
+        userRating.add(getAverageHonorRating(userId));
+
+        return userRating;
+    }
+
+    public double getInGameRatings(Long userId) {
+        return (getAverageSkillRating(userId)+getAverageMannerRating(userId)+getAverageHonorRating(userId))/3;
     }
 }

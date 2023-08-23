@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class UserRatingRequest {
-    private Long ratedUserId;
+    private String puuid;
     private Long raterUserId;
     private int skillRating;
     private int mannerRating;
@@ -13,7 +13,7 @@ public class UserRatingRequest {
 
     public UserRating toEntity() {
         return UserRating.builder()
-                .ratedUserId(ratedUserId)
+                .puuid(puuid)
                 .raterUserId(raterUserId)
                 .skillRating(skillRating)
                 .mannerRating(mannerRating)

@@ -15,15 +15,7 @@ public class UserRatingService {
     private final UserRatingRepository userRatingRepository;
 
     public void rateUser(UserRatingRequest ratingRequest) {
-        UserRating userRating = new UserRating(
-                ratingRequest.getRatedUserId(),
-                ratingRequest.getRaterUserId(),
-                ratingRequest.getSkillRating(),
-                ratingRequest.getMannerRating(),
-                ratingRequest.getHonorRating()
-        );
+        UserRating userRating = ratingRequest.toEntity();
         userRatingRepository.save(userRating);
     }
-
-
 }

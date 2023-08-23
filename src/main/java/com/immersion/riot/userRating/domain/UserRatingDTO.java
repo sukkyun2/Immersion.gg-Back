@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserRatingDTO {
-    private Long ratedUserId;
+    private String puuid;
     private Long raterUserId;
     private int skillRating;
     private int mannerRating;

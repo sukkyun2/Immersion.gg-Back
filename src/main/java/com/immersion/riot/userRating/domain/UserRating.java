@@ -18,18 +18,9 @@ public class UserRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long ratedUserId;
+    private String puuid;
     private Long raterUserId;
     private int skillRating;
     private int mannerRating;
     private int honorRating;
-
-    public UserRating(Long ratedUserId, Long raterUserId, int skillRating, int mannerRating, int honorRating) {
-        this.ratedUserId = ratedUserId;
-        this.raterUserId = raterUserId;
-        this.skillRating = skillRating;
-        this.mannerRating = mannerRating;
-        this.honorRating = honorRating;
-    }
-
 }
