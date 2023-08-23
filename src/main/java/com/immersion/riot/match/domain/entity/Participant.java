@@ -1,5 +1,6 @@
 package com.immersion.riot.match.domain.entity;
 
+import com.immersion.riot.match.infra.dto.PerksDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -49,6 +50,16 @@ public class Participant {
 
     private String championName;
 
+    private int totalMinionsKilled;
+
+    private int summoner1Id;
+
+    private int summoner2Id;
+
+    private int primaryPerk;
+
+    private int subPerk;
+
     private String puuid;
 
     private String summonerId;
@@ -71,7 +82,8 @@ public class Participant {
                        int item1, int item2, int item3, int item4, int item5, int item6, int champLevel,
                        int championId, String championName, String puuid, String summonerId, String summonerName,
                        int teamId, String teamPosition, int totalDamageDealtToChampions, int totalDamageTaken,
-                       int visionScore, boolean win) {
+                       int visionScore, boolean win, int summoner1Id, int summoner2Id, int primaryPerk, int subPerk,
+                        int totalMinionsKilled) {
         this.matchId = matchId;
         this.participantId = participantId;
         this.kills = kills;
@@ -96,13 +108,19 @@ public class Participant {
         this.totalDamageTaken = totalDamageTaken;
         this.visionScore = visionScore;
         this.win = win;
+        this.summoner1Id = summoner1Id;
+        this.summoner2Id = summoner2Id;
+        this.primaryPerk = primaryPerk;
+        this.subPerk = subPerk;
+        this.totalMinionsKilled = totalMinionsKilled;
     }
 
     public static Participant of(String matchId, int participantId, int kills, int deaths, int assists, int item0,
                                  int item1, int item2, int item3, int item4, int item5, int item6, int champLevel,
                                  int championId, String championName, String puuid, String summonerId, String summonerName,
                                  int teamId, String teamPosition, int totalDamageDealtToChampions, int totalDamageTaken,
-                                 int visionScore, boolean win) {
+                                 int visionScore, boolean win, int summoner1Id, int summoner2Id, int primaryPerk, int subPerk,
+                                 int totalMinionsKilled) {
         return new Participant(
                 matchId,
                 participantId,
@@ -127,7 +145,12 @@ public class Participant {
                 totalDamageDealtToChampions,
                 totalDamageTaken,
                 visionScore,
-                win
+                win,
+                summoner1Id,
+                summoner2Id,
+                primaryPerk,
+                subPerk,
+                totalMinionsKilled
         );
     }
 }
