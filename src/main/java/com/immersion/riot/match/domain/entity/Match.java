@@ -17,11 +17,11 @@ public class Match {
     @Id
     private String matchId;
 
-    private LocalDateTime gameStartTimestamp;
+    private LocalDateTime gameStartTime;
 
     private long gameDuration;
 
-    private LocalDateTime gameEndTimestamp;
+    private LocalDateTime gameEndTime;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "matchId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
