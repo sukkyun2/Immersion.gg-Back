@@ -1,6 +1,6 @@
 riot:
   api:
-    key: "11"
+    key: ${RIOT_API_KEY}
     url:
       kr: https://kr.api.riotgames.com
       asia: https://asia.api.riotgames.com
