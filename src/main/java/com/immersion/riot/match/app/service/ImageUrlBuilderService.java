@@ -50,7 +50,7 @@ public class ImageUrlBuilderService {
         ChampionDto champion = championQueryResponse.data().values().stream()
                 .filter(championDto -> championDto.key() == championKey)
                 .findFirst()
-                .orElseThrow(() -> new NoDataException("챔피언이 없습니다."));
+                .orElseThrow(() -> new NoDataException("championKey: " + championKey  + "에 해당하는 챔피언이 없습니다."));
 
         return CDN_URL + VERSION + "/img/champion/" + champion.image().full();
     }
