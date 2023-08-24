@@ -17,13 +17,10 @@ import java.util.List;
 public class ChampionStatQueryApi {
 
     private final ChampionStatQueryService championStatQueryService;
-    private final ImageUrlBuilderService imageUrlBuilderService;
 
     @GetMapping("/match/stat/{puuid}")
     public ResponseEntity<List<ChampionStatResponse>> getChampionStatsByPuuid(@PathVariable String puuid) {
-        List<ChampionStatResponse> championStatResponses = championStatQueryService.getMostChampionByPuuid(puuid).stream()
-                .map(dto -> ChampionStatResponse.from(dto, imageUrlBuilderService.getChampionImageUrl(dto.championId())))
-                .toList();
+        List<ChampionStatResponse> championStatResponses = championStatQueryService.getMostChampionByPuuid(puuid);
 
         return ResponseEntity.ok(championStatResponses);
     }
