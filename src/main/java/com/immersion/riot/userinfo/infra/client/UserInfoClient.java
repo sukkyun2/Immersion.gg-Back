@@ -1,0 +1,15 @@
+package com.immersion.riot.userinfo.infra.client;
+
+import com.immersion.riot.config.RiotFeignConfiguration;
+import com.immersion.riot.userinfo.infra.dto.SummonerDTO;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.Optional;
+
+@FeignClient(name = "summoner", configuration = RiotFeignConfiguration.class, url = "${riot.api.url}")
+public interface UserInfoClient {
+    @GetMapping("/lol/summoner/v4/summoners/by-name/{summonerName}")
+    SummonerDTO getSummoner(@PathVariable String summonerName);
+}
