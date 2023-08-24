@@ -24,11 +24,18 @@ public class ChampionStatQueryService {
 
     public List<ChampionStatResponse> getMostChampionByPuuid(String puuid) {
 
-        List<ChampionStatsDto> championStats = participantRepository.getChampionStats(puuid);
+        List<ChampionStatsDto> championStats = participantRepository.getChampionStatsByPuuid(puuid);
 
-        if (championStats.isEmpty()) {
-            throw new NoDataException("해당하는 유저의 챔피언 통계를 가져올 수 없습니다 puuid - "+ puuid);
-        }
+        return championStats.stream()
+                .map(dto -> ChampionStatResponse.from(
+                        dto,
+                        imageUrlBuilderService.getChampionImageUrl(dto.championId()))
+                ).toList();
+    }
+
+    public List<ChampionStatResponse> getMostChampionBySummonerName(String summonerName) {
+
+        List<ChampionStatsDto> championStats = participantRepository.getChampionStatsBySummonerName(summonerName);
 
         return championStats.stream()
                 .map(dto -> ChampionStatResponse.from(
