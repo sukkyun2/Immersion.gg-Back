@@ -19,4 +19,8 @@ public class MatchUpdateHistory {
     private String puuid;
 
     private LocalDateTime lastUpdateTime;
+
+    public void updateLastUpdateTime(LocalDateTime lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
 }

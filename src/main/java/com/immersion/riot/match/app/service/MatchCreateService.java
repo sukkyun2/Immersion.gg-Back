@@ -36,6 +36,7 @@ public class MatchCreateService {
         MatchRequest matchRequest = MatchRequest.builder()
                 .startTime(history.getLastUpdateTime().toEpochSecond(ZoneOffset.UTC))
                 .build();
+        history.updateLastUpdateTime(LocalDateTime.now());
         riotMatchCreateService.saveAllMatch(puuid, matchRequest);
 
     }
