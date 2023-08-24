@@ -1,5 +1,6 @@
 package com.immersion.riot.userinfo.api;
 
+import com.immersion.riot.userinfo.app.LeagueEntryResponse;
 import com.immersion.riot.userinfo.app.UserInfoResponse;
 import com.immersion.riot.userinfo.app.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,16 @@ public class UserInfoApi {
     }
 
     @GetMapping("users/{summonerName}/solorank")
-    public ResponseEntity<String> getSoloRank(@PathVariable String summonerName) {
+    public ResponseEntity<LeagueEntryResponse> getSoloRank(@PathVariable String summonerName) {
 
-        return ResponseEntity.ok("");
+        LeagueEntryResponse soloRankResponse = userInfoService.getUserSolorank(summonerName);
+        return ResponseEntity.ok(soloRankResponse);
     }
 
     @GetMapping("users/{summonerName}/flexrank")
-    public ResponseEntity<String> getFlexRank(@PathVariable String summonerName) {
+    public ResponseEntity<LeagueEntryResponse> getFlexRank(@PathVariable String summonerName) {
 
-        return ResponseEntity.ok("");
+        LeagueEntryResponse flexRankResponse = userInfoService.getUserFlexrank(summonerName);
+        return ResponseEntity.ok(flexRankResponse);
     }
 }

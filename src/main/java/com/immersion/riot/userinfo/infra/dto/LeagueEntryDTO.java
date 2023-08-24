@@ -5,7 +5,8 @@ public record LeagueEntryDTO(
     String tier,
     String rank,
     String summonerId,
-    String summonerName
+    String summonerName,
+    int leaguePoints
 ) {
 
 }

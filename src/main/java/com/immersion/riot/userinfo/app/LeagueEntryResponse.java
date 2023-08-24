@@ -7,4 +7,5 @@ public class LeagueEntryResponse {
     String queueType;
     String tier;
     String rank;
+    int leaguePoints;
 }
