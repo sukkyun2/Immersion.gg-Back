@@ -6,6 +6,10 @@ import com.immersion.riot.match.app.dto.ParticipantResponse;
 import com.immersion.riot.match.app.service.ImageUrlBuilderService;
 import com.immersion.riot.match.query.MatchQueryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,16 +25,17 @@ public class MatchQueryApi {
     private final ImageUrlBuilderService imageUrlBuilderService;
 
     @GetMapping("/match/{puuid}")
-    public ResponseEntity<List<MatchResponse>> getMatchListByPuuid(@PathVariable String puuid) {
+    public ResponseEntity<Page<MatchResponse>> getMatchListByPuuid(
+            @PathVariable String puuid,
+            @PageableDefault(sort = "gameEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        List<MatchResponse> matchResponseList = dtoToResponse(matchQueryService.getMatchList(puuid));
+        Page<MatchResponse> matchResponseList = dtoToResponse(matchQueryService.getMatchList(puuid, pageable));
 
         return ResponseEntity.ok(matchResponseList);
     }
 
-    private List<MatchResponse> dtoToResponse(List<MatchDto> matchList) {
-        return matchList.stream()
-                .map(matchDto -> MatchResponse.of(
+    private Page<MatchResponse> dtoToResponse(Page<MatchDto> matchList) {
+        return matchList.map(matchDto -> MatchResponse.of(
                         formatGameDuration(matchDto.gameDuration()),
                         matchDto.participants().stream()
                                 .map(participantDto -> ParticipantResponse.of(
@@ -56,7 +61,7 @@ public class MatchQueryApi {
                                         imageUrlBuilderService.getItemImageUrl(participantDto.item4()),
                                         imageUrlBuilderService.getItemImageUrl(participantDto.item5())
                                 )).toList(),
-                        matchDto.winTeam())).toList();
+                        matchDto.winTeam()));
     }
 
     private double caculateKDA(int kill, int death, int assist) {
