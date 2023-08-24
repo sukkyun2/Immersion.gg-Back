@@ -1,6 +1,7 @@
 package com.immersion.riot.match.api.champion_stat;
 
 import com.immersion.riot.match.app.dto.ChampionStatResponse;
+import com.immersion.riot.match.app.service.ImageUrlBuilderService;
 import com.immersion.riot.match.query.ChampionStatQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,14 +17,12 @@ import java.util.List;
 public class ChampionStatQueryApi {
 
     private final ChampionStatQueryService championStatQueryService;
-
-    @Value("${riot.api.url.image}")
-    private String IMAGES_URL;
+    private final ImageUrlBuilderService imageUrlBuilderService;
 
     @GetMapping("/match/stat/{puuid}")
     public ResponseEntity<List<ChampionStatResponse>> getChampionStatsByPuuid(@PathVariable String puuid) {
         List<ChampionStatResponse> championStatResponses = championStatQueryService.getMostChampionByPuuid(puuid).stream()
-                .map(dto -> ChampionStatResponse.from(dto, IMAGES_URL))
+                .map(dto -> ChampionStatResponse.from(dto, imageUrlBuilderService.getChampionImageUrl(dto.championId())))
                 .toList();
 
         return ResponseEntity.ok(championStatResponses);

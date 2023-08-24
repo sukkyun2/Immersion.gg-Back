@@ -4,8 +4,8 @@ riot:
     url:
       kr: https://kr.api.riotgames.com
       asia: https://asia.api.riotgames.com
-      image: http://ddragon.leagueoflegends.com/cdn/13.16.1/img/champion/
-
+      cdn: https://ddragon.leagueoflegends.com/cdn/
+  versions: 13.16.1
 logging:
   level:
     com:
