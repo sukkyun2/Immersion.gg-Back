@@ -15,7 +15,7 @@ public class UserRatingViewService {
     private final UserRatingRepository userRatingRepository;
 
     public double getAverageSkillRating(Long userId) {
-        List<UserRating> ratings = userRatingRepository.findByRatedUserId(userId);
+        List<UserRating> ratings = userRatingRepository.findByRaterUserId(userId);
 
         if (ratings.isEmpty()) {
             return 0.0;
@@ -31,7 +31,7 @@ public class UserRatingViewService {
     }
 
     public double getAverageMannerRating(Long userId) {
-        List<UserRating> ratings = userRatingRepository.findByRatedUserId(userId);
+        List<UserRating> ratings = userRatingRepository.findByRaterUserId(userId);
 
         if (ratings.isEmpty()) {
             return 0.0;
@@ -47,7 +47,7 @@ public class UserRatingViewService {
     }
 
     public double getAverageHonorRating(Long userId) {
-        List<UserRating> ratings = userRatingRepository.findByRatedUserId(userId);
+        List<UserRating> ratings = userRatingRepository.findByRaterUserId(userId);
 
         if (ratings.isEmpty()) {
             return 0.0;
