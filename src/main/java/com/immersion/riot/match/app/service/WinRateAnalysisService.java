@@ -32,7 +32,7 @@ public class WinRateAnalysisService {
         return winRateDtoMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        entry -> ChampionWinRateResponse.from(entry.getValue(), "")
+                        entry -> ChampionWinRateResponse.from(entry.getValue(), imageUrlBuilderService.getChampionImageUrlByName(entry.getKey()))
                 ));
     }
 

@@ -55,6 +55,11 @@ public class ImageUrlBuilderService {
         return CDN_URL + VERSION + "/img/champion/" + champion.image().full();
     }
 
+    public String getChampionImageUrlByName(String championName) {
+
+        return CDN_URL + VERSION + "/img/champion/" + championName + ".png";
+    }
+
     public String getItemImageUrl(int itemKey) {
         return CDN_URL + VERSION + "/img/item/" + itemKey + ".png";
     }
