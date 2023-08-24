@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "GAME_MATCH")
 @ToString
 @AllArgsConstructor(staticName = "of")
 public class Match {
