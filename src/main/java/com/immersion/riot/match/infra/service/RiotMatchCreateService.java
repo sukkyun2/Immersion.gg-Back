@@ -7,6 +7,7 @@ import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.ZoneOffset;
@@ -14,6 +15,7 @@ import java.time.ZoneOffset;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class RiotMatchCreateService {
 
     private final MatchClient matchClient;
@@ -25,11 +27,11 @@ public class RiotMatchCreateService {
     }
 
     private void saveMatchInfo(String matchId) {
-        try {
-            matchRepository.save(matchClient.getMatchInfo(matchId).toEntity());
-        } catch (EntityExistsException e) {
-            log.info("이미 존재하는 Match 정보입니다 : {}, message : {}", matchId, e.getMessage());
-        }
-    }
 
+        if (matchRepository.existsById(matchId)) {
+            log.info("이미 존재하는 Match 정보입니다 : {}, message : {}", matchId);
+            return;
+        }
+        matchRepository.save(matchClient.getMatchInfo(matchId).toEntity());
+    }
 }

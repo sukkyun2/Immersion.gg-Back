@@ -13,7 +13,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
             " SUM(CASE WHEN p.win = false THEN 1 ELSE 0 END), AVG(p.kills), AVG(p.deaths), AVG(p.assists)) " +
             "FROM Participant p " +
             "WHERE p.puuid = :puuid " +
-            "GROUP BY p.championName")
+            "GROUP BY p.championName, p.championId")
     List<ChampionStatsDto> getChampionStats(String puuid);
 
 }
