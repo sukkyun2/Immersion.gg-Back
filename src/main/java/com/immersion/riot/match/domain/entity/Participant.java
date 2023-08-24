@@ -4,19 +4,22 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
+@IdClass(ParticipantId.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = {
+        @Index(columnList = "matchId"),
+        @Index(columnList = "puuid"),
+        @Index(columnList = "summonerName")
+})
 @Getter
 public class Participant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String matchId;
 
+    @Id
     private String puuid;
 
     private int participantId;

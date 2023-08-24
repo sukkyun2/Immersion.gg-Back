@@ -9,10 +9,9 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(staticName = "of")
 @Getter
 @Table(name = "GAME_MATCH")
-@ToString
-@AllArgsConstructor(staticName = "of")
 public class Match {
 
     @Id
@@ -24,10 +23,8 @@ public class Match {
 
     private LocalDateTime gameEndTime;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "matchId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "matchId", fetch = FetchType.LAZY)
     private List<Participant> participants = new ArrayList<>();
 
     private String winTeam;
-
 }
