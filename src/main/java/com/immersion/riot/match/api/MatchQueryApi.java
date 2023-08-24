@@ -38,7 +38,7 @@ public class MatchQueryApi {
         return ResponseEntity.ok(matchList);
     }
 
-    @GetMapping("/search/{summonerName}")
+    @GetMapping("/summoners/{summonerName}")
     public ResponseEntity<MatchWithStatsResponse> searchBySummoner(
             @PathVariable String summonerName,
             @PageableDefault(sort = "gameEndTime", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -47,7 +47,7 @@ public class MatchQueryApi {
         return ResponseEntity.ok(matchWithStatsResponse);
     }
 
-    @GetMapping("/match/analyze/{puuid}")
+    @GetMapping("/match/win-rate/{puuid}")
     public Map<String, ChampionWinRateResponse> analyzeWinRate(@PathVariable String puuid, @RequestParam String championName) {
         return winRateAnalysisService.caculateWinRate(puuid, championName);
     }

@@ -27,12 +27,12 @@ public class WinRateAnalysisService {
     public Map<String, ChampionWinRateResponse> caculateWinRate(String puuid, String championName) {
         List<Match> matchList = matchRepository.getMatchIdByPuuidAndChampionId(puuid, championName);
 
-        Map<String, ChampionWinRateDto> winRateDtoMap = calculateWinRate(matchList, puuid);
-
-        return winRateDtoMap.entrySet().stream()
+        return calculateWinRate(matchList, puuid).entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        entry -> ChampionWinRateResponse.from(entry.getValue(), imageUrlBuilderService.getChampionImageUrlByName(entry.getKey()))
+                        entry -> ChampionWinRateResponse.from(
+                                entry.getValue(),
+                                imageUrlBuilderService.getChampionImageUrlByName(entry.getKey()))
                 ));
     }
 
