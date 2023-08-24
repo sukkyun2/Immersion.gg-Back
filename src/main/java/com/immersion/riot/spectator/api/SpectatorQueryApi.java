@@ -1,6 +1,7 @@
 package com.immersion.riot.spectator.api;
 
-import com.immersion.riot.spectator.app.SpectatorQueryResponse;
+import com.immersion.riot.spectator.app.SpectatorDTO;
+import com.immersion.riot.spectator.infra.SpectatorQueryResponse;
 import com.immersion.riot.spectator.app.SpectatorQueryService;
 import com.immersion.riot.common.app.NoDataException;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,9 @@ public class SpectatorQueryApi {
     private final SpectatorQueryService spectatorQueryService;
 
     @GetMapping("/lol/spectator/v4/active-games/by-summoner/{encryptedSummonerId}")
-    public ResponseEntity<SpectatorQueryResponse> getSpectator(@PathVariable String encryptedSummonerId) {
+    public ResponseEntity<SpectatorDTO> getSpectator(@PathVariable String encryptedSummonerId) {
         try {
-            SpectatorQueryResponse response = spectatorQueryService.getSpectator(encryptedSummonerId);
+            SpectatorDTO response = spectatorQueryService.getSpectator(encryptedSummonerId);
             return ResponseEntity.ok(response);
         } catch (NoDataException e) {
             return ResponseEntity.noContent().build();
