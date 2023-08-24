@@ -15,7 +15,7 @@ public record ChampionStatResponse(
 
     public static ChampionStatResponse from(ChampionStatsDto dto, String imageUrl) {
 
-        double winRate = (double) dto.winMatchCount() / dto.totalMatch() * 100;
+        double winRate = Math.round((double) dto.winMatchCount() / dto.totalMatch() * 10000) / 100.0;
         double roundedKillAvg = Math.round(dto.killAvg() * 100) / 100.0;
         double roundedDeathAvg = Math.round(dto.deathAvg() * 100) / 100.0;
         double roundedAssistAvg = Math.round(dto.assistAvg() * 100) / 100.0;
@@ -23,7 +23,7 @@ public record ChampionStatResponse(
 
         return new ChampionStatResponse(
                 dto.championName(),
-                imageUrl + dto.championName() + ".png",
+                imageUrl,
                 dto.totalMatch().intValue(),
                 dto.winMatchCount().intValue(),
                 dto.loseMatchCount().intValue(),

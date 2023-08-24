@@ -32,7 +32,7 @@ public record MatchQueryResponse(
                                 participantDto.item6(),
                                 participantDto.champLevel(),
                                 participantDto.championId(),
-                                participantDto.championName(),
+                                participantDto.championName(), //TODO : 챔피언 이름 한국어로 저장?
                                 participantDto.puuid(),
                                 participantDto.summonerId(),
                                 participantDto.summonerName(),
@@ -41,7 +41,12 @@ public record MatchQueryResponse(
                                 participantDto.totalDamageDealtToChampions(),
                                 participantDto.totalDamageTaken(),
                                 participantDto.visionScore(),
-                                participantDto.win()
+                                participantDto.win(),
+                                participantDto.summoner1Id(),
+                                participantDto.summoner2Id(),
+                                participantDto.perks().styles().get(0).style(),
+                                participantDto.perks().styles().get(1).style(),
+                                participantDto.totalMinionsKilled()
                         )
                 ).collect(Collectors.toList()),
                 getWinTeamId()

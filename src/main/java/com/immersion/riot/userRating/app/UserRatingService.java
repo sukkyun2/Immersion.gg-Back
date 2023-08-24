@@ -1,12 +1,9 @@
 package com.immersion.riot.userRating.app;
 
-import com.immersion.riot.userRating.domain.UserRatingDTO;
 import com.immersion.riot.userRating.domain.UserRating;
 import com.immersion.riot.userRating.domain.UserRatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
