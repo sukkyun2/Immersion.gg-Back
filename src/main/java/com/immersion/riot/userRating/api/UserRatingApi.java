@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class UserRatingApi {
@@ -21,7 +23,8 @@ public class UserRatingApi {
     }
 
     @GetMapping("/rating/{userId}")
-    public ResponseEntity<List<double>> getAverageRating(@PathVariable Long userId) {
+    public ResponseEntity<List<Double>> getAverageRating(@PathVariable Long userId) {
+
         List<Double> userRatings = userRatingViewService.getUserRating(userId);
         return ResponseEntity.ok(userRatings);
     }
