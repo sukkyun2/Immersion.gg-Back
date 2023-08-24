@@ -23,7 +23,7 @@ public class UserRatingApi {
     }
 
     @GetMapping("/rating/{userId}")
-    public ResponseEntity<List> getAverageRating(@PathVariable Long userId) {
+    public ResponseEntity<List<Double>> getAverageRating(@PathVariable Long userId) {
 
         List<Double> userRatings = userRatingViewService.getUserRating(userId);
         return ResponseEntity.ok(userRatings);
