@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface UserInfoClient {
     @GetMapping("/lol/summoner/v4/summoners/by-name/{summonerName}")
     SummonerDTO getSummoner(@PathVariable String summonerName);
+
+    @GetMapping("/lol/league/v4/entries/by-summoner/{encryptedSummonerId}")
+    List<LeagueEntryDTO> getSummonerLeague(@PathVariable String encryptedSummonerId);
 }
