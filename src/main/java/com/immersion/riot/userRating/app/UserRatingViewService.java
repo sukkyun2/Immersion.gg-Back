@@ -5,6 +5,7 @@ import com.immersion.riot.userRating.domain.UserRatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,9 +63,9 @@ public class UserRatingViewService {
     }
 
     public List<Double> getUserRating(Long userId) {
-        List<Double> userRating;
+        List<Double> userRating = new ArrayList<>();
 
-        userRating.add(getSkillRating(userId));
+        userRating.add(getAverageSkillRating(userId));
         userRating.add(getAverageMannerRating(userId));
         userRating.add(getAverageHonorRating(userId));
 

@@ -10,7 +10,4 @@ public class UserInfoService {
 
     private final UserInfoClient userInfoClient;
 
-    public UserInfoResponse getUserInfo() {
-
-    }
 }
