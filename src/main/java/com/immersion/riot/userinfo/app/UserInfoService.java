@@ -9,5 +9,4 @@ import org.springframework.stereotype.Service;
 public class UserInfoService {
 
     private final UserInfoClient userInfoClient;
-
 }
