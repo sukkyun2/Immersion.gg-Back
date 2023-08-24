@@ -9,5 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface MatchRepository extends JpaRepository<Match, String> {
 
     @Query("SELECT m FROM Match m JOIN m.participants p WHERE p.puuid = :puuid")
-    Page<Match> getMatchListByPuuid(String puuid, Pageable pageable);
+    Slice<Match> getMatchListByPuuid(String puuid, Pageable pageable);
+
+    @Query("SELECT m FROM Match m JOIN m.participants p WHERE p.summonerName = :summonerName")
+    Slice<Match> getMatchListBySummonerName(String summonerName, Pageable pageable);
 }

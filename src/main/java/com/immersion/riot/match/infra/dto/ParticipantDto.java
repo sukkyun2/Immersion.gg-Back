@@ -34,7 +34,7 @@ public record ParticipantDto(
 
     public double caculateKDA() {
         if (deaths == 0) {
-            return (double) (kills + assists);
+            return (kills + assists);
         }
         return Math.round((kills + assists) / (double) deaths * 100) / 100.0;
     }
