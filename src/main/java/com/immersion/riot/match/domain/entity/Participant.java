@@ -8,15 +8,15 @@ import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@IdClass(ParticipantId.class)
 @Getter
-@ToString
 public class Participant {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String matchId;
 
-    @Id
     private String puuid;
 
     private int participantId;
