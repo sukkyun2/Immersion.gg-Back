@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface UserRatingRepository extends JpaRepository<UserRating, Long> {
-    List<UserRating> findByRatedUserId(Long ratedUserId);
+    List<UserRating> findByRaterUserId(Long raterUserId);
 }

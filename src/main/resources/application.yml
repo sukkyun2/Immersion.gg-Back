@@ -19,4 +19,7 @@ spring:
           default:
             dismiss404: true
             loggerLevel: FULL
-
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
