@@ -21,6 +21,8 @@ public class Match {
 
     private long gameDuration;
 
+    private int queueId;
+
     private LocalDateTime gameEndTime;
 
     @OneToMany(mappedBy = "matchId", fetch = FetchType.LAZY)
