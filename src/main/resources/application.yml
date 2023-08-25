@@ -1,6 +1,6 @@
 riot:
   api:
-    key: RGAPI-8f81a5fd-f3f8-49b7-8db2-2ea0c30227d0
+    key: ${riot.api.key}
     url:
       kr: https://kr.api.riotgames.com
       asia: https://asia.api.riotgames.com
