@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "summoner", configuration = RiotFeignConfiguration.class, url = "${riot.api.url}")
+@FeignClient(name = "summoner", configuration = RiotFeignConfiguration.class, url = "${riot.api.url.kr}")
 public interface UserInfoClient {
     @GetMapping("/lol/summoner/v4/summoners/by-name/{summonerName}")
     SummonerDTO getSummoner(@PathVariable String summonerName);
