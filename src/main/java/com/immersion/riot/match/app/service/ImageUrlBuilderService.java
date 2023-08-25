@@ -63,4 +63,8 @@ public class ImageUrlBuilderService {
     public String getItemImageUrl(int itemKey) {
         return CDN_URL + VERSION + "/img/item/" + itemKey + ".png";
     }
+    
+    public String getProfileImageUrl(int profileIconId) {
+        return CDN_URL + VERSION + "/img/profileicon/" + profileIconId + ".png";
+    }
 }
