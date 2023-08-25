@@ -6,6 +6,7 @@ import com.immersion.riot.match.app.service.ImageUrlBuilderService;
 import com.immersion.riot.match.domain.entity.Match;
 import com.immersion.riot.match.domain.entity.Participant;
 import com.immersion.riot.match.domain.repository.MatchRepository;
+import com.immersion.riot.spectator.domain.enums.QueueType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,7 @@ public class MatchQueryService {
 
     private Slice<MatchResponse> dtoToResponse(Slice<MatchDto> matchList) {
         return matchList.map(matchDto -> MatchResponse.of(
+                matchDto.gameStartTime().toString(),
                 matchDto.formatGameDuration(),
                 matchDto.participants().stream()
                         .map(participantDto -> ParticipantResponse.of(
@@ -64,6 +66,9 @@ public class MatchQueryService {
                                 imageUrlBuilderService.getItemImageUrl(participantDto.item4()),
                                 imageUrlBuilderService.getItemImageUrl(participantDto.item5())
                         )).toList(),
-                matchDto.winTeam()));
+                matchDto.winTeam(),
+                QueueType.ofQueueId(matchDto.queueId())
+        ));
     }
+
 }

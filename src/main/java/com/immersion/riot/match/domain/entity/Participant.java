@@ -22,6 +22,8 @@ public class Participant {
     @Id
     private String puuid;
 
+    private int queueId;
+
     private int participantId;
 
     private int kills;
@@ -81,7 +83,7 @@ public class Participant {
                         int championId, String championName, String puuid, String summonerId, String summonerName,
                         int teamId, String teamPosition, int totalDamageDealtToChampions, int totalDamageTaken,
                         int visionScore, boolean win, int summoner1Id, int summoner2Id, int primaryPerk, int subPerk,
-                        int totalMinionsKilled) {
+                        int totalMinionsKilled, int queueId) {
         this.matchId = matchId;
         this.participantId = participantId;
         this.kills = kills;
@@ -111,6 +113,7 @@ public class Participant {
         this.primaryPerk = primaryPerk;
         this.subPerk = subPerk;
         this.totalMinionsKilled = totalMinionsKilled;
+        this.queueId = queueId;
     }
 
     public static Participant of(String matchId, int participantId, int kills, int deaths, int assists, int item0,
@@ -118,7 +121,7 @@ public class Participant {
                                  int championId, String championName, String puuid, String summonerId, String summonerName,
                                  int teamId, String teamPosition, int totalDamageDealtToChampions, int totalDamageTaken,
                                  int visionScore, boolean win, int summoner1Id, int summoner2Id, int primaryPerk, int subPerk,
-                                 int totalMinionsKilled) {
+                                 int totalMinionsKilled, int queueId) {
         return new Participant(
                 matchId,
                 participantId,
@@ -148,7 +151,8 @@ public class Participant {
                 summoner2Id,
                 primaryPerk,
                 subPerk,
-                totalMinionsKilled
+                totalMinionsKilled,
+                queueId
         );
     }
 }
