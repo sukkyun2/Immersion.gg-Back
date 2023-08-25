@@ -42,8 +42,8 @@ public class MatchQueryApi {
         return ResponseEntity.ok(matchWithStatsResponse);
     }
 
-    @GetMapping("/match/win-rate/{puuid}")
-    public Map<String, ChampionWinRateResponse> analyzeWinRate(@PathVariable String puuid, @RequestParam String championName) {
+    @GetMapping("/match/win-rate/{puuid}/{championName}")
+    public Map<String, ChampionWinRateResponse> analyzeWinRate(@PathVariable String puuid, @PathVariable String championName) {
         return winRateAnalysisService.getAnalyzedWinRate(puuid, championName);
     }
 
