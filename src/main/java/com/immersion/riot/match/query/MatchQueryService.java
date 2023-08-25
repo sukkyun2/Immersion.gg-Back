@@ -40,7 +40,7 @@ public class MatchQueryService {
 
     private Slice<MatchResponse> dtoToResponse(Slice<MatchDto> matchList) {
         return matchList.map(matchDto -> MatchResponse.of(
-                matchDto.gameStartTime().toString(),
+                matchDto.gameStartTime(),
                 matchDto.formatGameDuration(),
                 matchDto.participants().stream()
                         .map(participantDto -> ParticipantResponse.of(
