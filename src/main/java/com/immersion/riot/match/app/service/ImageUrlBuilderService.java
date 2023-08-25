@@ -28,7 +28,7 @@ public class ImageUrlBuilderService {
         SummonerCastDto summonerCast = summonerCastResponse.data().values().stream()
                 .filter(summonerCastDto -> summonerCastDto.key() == spellKey)
                 .findFirst()
-                .orElseThrow(() -> new NoDataException("spellKey: " + spellKey + "에 해당하는 스펠이 없습니다."));
+                .orElseThrow(() -> new NoDataException("spellKey: " + spellKey + "에 해당하는 스펠이 없습니다.")); //TODO: Redis 캐싱
 
         return CDN_URL + VERSION + "/img/spell/"  + summonerCast.image().full();
     }
@@ -39,7 +39,7 @@ public class ImageUrlBuilderService {
         SummonerPerksQueryResponse summonerPerk = summonerPerkResponse.stream()
                 .filter(summonerPerksQueryResponse -> summonerPerksQueryResponse.id() == perkId)
                 .findFirst()
-                .orElseThrow(() -> new NoDataException("perkId: " + perkId + "에 해당하는 룬이 없습니다."));
+                .orElseThrow(() -> new NoDataException("perkId: " + perkId + "에 해당하는 룬이 없습니다."));//TODO: Redis 캐싱
 
         return CDN_URL + "img/" + summonerPerk.icon();
     }
@@ -50,7 +50,7 @@ public class ImageUrlBuilderService {
         ChampionDto champion = championQueryResponse.data().values().stream()
                 .filter(championDto -> championDto.key() == championKey)
                 .findFirst()
-                .orElseThrow(() -> new NoDataException("championKey: " + championKey  + "에 해당하는 챔피언이 없습니다."));
+                .orElseThrow(() -> new NoDataException("championKey: " + championKey  + "에 해당하는 챔피언이 없습니다."));//TODO: Redis 캐싱
 
         return CDN_URL + VERSION + "/img/champion/" + champion.image().full();
     }
