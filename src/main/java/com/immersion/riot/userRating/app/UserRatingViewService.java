@@ -72,7 +72,7 @@ public class UserRatingViewService {
         return userRating;
     }
 
-    public double getInGameRatings(String puuid) {
+    public double getUserRatingAverage(String puuid) {
         return (getAverageSkillRating(puuid)+getAverageMannerRating(puuid)+getAverageHonorRating(puuid))/3;
     }
 }

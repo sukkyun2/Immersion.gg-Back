@@ -24,4 +24,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
             "GROUP BY p.championName, p.championId " +
             "ORDER BY COUNT(p) DESC")
     List<ChampionStatsDto> getChampionStatsBySummonerName(String summonerName);
+
+    List<Participant> findAllByPuuidAndChampionId(String puuid, int championId);
 }
