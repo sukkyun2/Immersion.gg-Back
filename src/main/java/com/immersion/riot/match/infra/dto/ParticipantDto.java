@@ -1,6 +1,5 @@
 package com.immersion.riot.match.infra.dto;
 
-import com.immersion.riot.match.app.dto.MatchDto;
 import com.immersion.riot.match.domain.entity.Participant;
 
 public record ParticipantDto(
@@ -32,6 +31,14 @@ public record ParticipantDto(
         int visionScore,
         boolean win
 ) {
+
+    public double caculateKDA() {
+        if (deaths == 0) {
+            return (kills + assists);
+        }
+        return Math.round((kills + assists) / (double) deaths * 100) / 100.0;
+    }
+
     public static ParticipantDto from(Participant entity) {
         return new ParticipantDto(
                 entity.getAssists(),
