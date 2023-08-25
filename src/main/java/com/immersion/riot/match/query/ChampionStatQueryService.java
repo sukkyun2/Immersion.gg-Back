@@ -3,7 +3,9 @@ package com.immersion.riot.match.query;
 import com.immersion.riot.common.app.NoDataException;
 import com.immersion.riot.match.app.dto.ChampionStatResponse;
 import com.immersion.riot.match.app.dto.ChampionStatsDto;
+import com.immersion.riot.match.app.dto.ChampionWinRateDto;
 import com.immersion.riot.match.app.service.ImageUrlBuilderService;
+import com.immersion.riot.match.domain.entity.Participant;
 import com.immersion.riot.match.domain.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,13 @@ public class ChampionStatQueryService {
                         dto,
                         imageUrlBuilderService.getChampionImageUrl(dto.championId()))
                 ).toList();
+    }
+
+    public ChampionWinRateDto getChampionStatistics(String puuid, Integer championId){
+        List<Participant> participants = participantRepository.findAllByPuuidAndChampionId(puuid, championId);
+        long winCount = participants.stream().filter(Participant::isWin).count();
+
+        return new ChampionWinRateDto(participants.size(), (int) winCount);
     }
 
 }

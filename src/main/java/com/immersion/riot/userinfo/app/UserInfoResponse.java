@@ -6,10 +6,11 @@ import java.util.List;
 
 @Data
 public class UserInfoResponse {
-    String profileImageUrl;
-    String name;
-    String id;
-    String puuid;
-    long summonerLevel;
-    List<LeagueEntryResponse> rank;
+    private String profileImageUrl;
+    private String name;
+    private String id;
+    private String puuid;
+    private long summonerLevel;
+    private List<LeagueEntryResponse> rank;
+    private double userRatingAverage;
 }

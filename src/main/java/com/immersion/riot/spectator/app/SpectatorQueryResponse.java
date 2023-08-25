@@ -2,8 +2,11 @@ package com.immersion.riot.spectator.app;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.immersion.riot.match.app.dto.ChampionWinRateDto;
+import com.immersion.riot.match.app.dto.ChampionWinRateResponse;
 import com.immersion.riot.spectator.domain.enums.QueueType;
 import com.immersion.riot.spectator.domain.enums.TeamCode;
+import com.immersion.riot.userinfo.app.UserInfoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,6 +40,8 @@ public class SpectatorQueryResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CurrentGameParticipant {
+        private UserInfoResponse summoner;
+        private ChampionWinRateDto championStatistic;
         private String summonerName;
         private String summonerId;
         private String spell1ImageUrl;
