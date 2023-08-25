@@ -20,16 +20,31 @@ public class UserRankService {
         List<LeagueEntryResponse> summonerRank = new ArrayList<>();
 
         for (LeagueEntryDTO league : summonerLeague) {
-            LeagueEntryResponse leagueEntryResponse = new LeagueEntryResponse();
-            leagueEntryResponse.setQueueType(league.queueType());
-            leagueEntryResponse.setRank(league.rank());
-            leagueEntryResponse.setTier(league.tier());
-            leagueEntryResponse.setLeaguePoints(league.leaguePoints());
+            LeagueEntryResponse leagueEntryResponse = new LeagueEntryResponse(league.queueType(), league.rank(), league.tier(), league.leaguePoints());
+            
             summonerRank.add(leagueEntryResponse);
+        }
+
+        if(summonerRank.isEmpty()) {
+            LeagueEntryResponse soloRank = new LeagueEntryResponse("RANKED_SOLO_5X5", "Unranked", "", 0);
+            LeagueEntryResponse flexRank = new LeagueEntryResponse("RANKED_FLEX_SR", "Unranked", "", 0);
+            summonerRank.add(soloRank);
+            summonerRank.add(flexRank);
+        }
+
+        if(summonerRank.size() == 1) {
+            if (summonerRank.get(0).getQueueType().equals("RANKED_SOLO_5x5")) {
+                LeagueEntryResponse flexRank = new LeagueEntryResponse("RANKED_FLEX_SR", "Unranked", "", 0);
+                summonerRank.add(flexRank);
+            } else if (summonerRank.get(0).getQueueType().equals("RANKED_FLEX_SR")) {
+                LeagueEntryResponse soloRank = new LeagueEntryResponse("RANKED_SOLO_5X5", "Unranked", "", 0);
+                summonerRank.add(soloRank);
+            }
         }
 
         return summonerRank;
     }
+
     public LeagueEntryResponse getUserSoloRank(String summonerName) {
         SummonerDTO summonerDTO = userInfoClient.getSummoner(summonerName);
         List<LeagueEntryDTO> summonerLeague = userInfoClient.getSummonerLeague(summonerDTO.id());

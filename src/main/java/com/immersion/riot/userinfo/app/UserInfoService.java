@@ -23,9 +23,7 @@ public class UserInfoService {
         userInfo.setName(summonerDTO.name());
         userInfo.setPuuid(summonerDTO.puuid());
         userInfo.setSummonerLevel(summonerDTO.summonerLevel());
-//        userInfo.setRank(userRankService.getSummonerRank(summonerDTO.id()));
-        userInfo.setSoloRank(userRankService.getUserSoloRank(summonerDTO.id()));
-        userInfo.setFlexRank(userRankService.getUserFlexRank(summonerDTO.id()));
+        userInfo.setRank(userRankService.getSummonerRank(summonerDTO.id()));
 
         return userInfo;
     }
