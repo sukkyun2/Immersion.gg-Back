@@ -10,7 +10,7 @@ public record ChampionWinRateResponse(
         return new ChampionWinRateResponse(
                 championImageUrl,
                 dto.getTotalMatches(),
-                dto.getWinRate()
+                dto.calcWinRate()
         );
     }
 }

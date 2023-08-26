@@ -1,9 +1,11 @@
 package com.immersion.riot.match.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.immersion.riot.match.app.dto.*;
 import com.immersion.riot.match.app.service.WinRateAnalysisService;
 import com.immersion.riot.match.query.MatchQueryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -43,7 +45,7 @@ public class MatchQueryApi {
     }
 
     @GetMapping("/match/win-rate/{puuid}/{championName}")
-    public Map<String, ChampionWinRateResponse> analyzeWinRate(@PathVariable String puuid, @PathVariable String championName) {
+    public Map<String, ChampionWinRateResponse> analyzeWinRate(@PathVariable String puuid, @PathVariable String championName) throws JSONException, JsonProcessingException {
         return winRateAnalysisService.getAnalyzedWinRate(puuid, championName);
     }
 

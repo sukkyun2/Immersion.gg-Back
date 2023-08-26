@@ -1,5 +1,7 @@
 package com.immersion.riot.match.app.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.immersion.riot.match.app.dto.ChampionWinRateResponse;
 import com.immersion.riot.match.domain.entity.Match;
 import com.immersion.riot.match.domain.entity.Participant;
@@ -7,6 +9,10 @@ import com.immersion.riot.match.domain.repository.MatchRepository;
 import com.immersion.riot.match.app.dto.ChampionWinRateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +27,15 @@ public class WinRateAnalysisService {
 
     private final MatchRepository matchRepository;
     private final ImageUrlBuilderService imageUrlBuilderService;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
 
-    public Map<String, ChampionWinRateResponse> getAnalyzedWinRate(String puuid, String championName) {
+    private static final String TOPIC = "chatGpt";
+
+    public Map<String, ChampionWinRateResponse> getAnalyzedWinRate(String puuid, String championName) throws JSONException, JsonProcessingException {
         List<Match> matchList = matchRepository.getMatchIdByPuuidAndChampionId(puuid, championName);
 
-        return calculateWinRate(matchList, puuid).entrySet().stream()
+        return calculateWinRate(matchList, puuid, championName).entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> ChampionWinRateResponse.from(
@@ -36,7 +46,7 @@ public class WinRateAnalysisService {
                 ));
     }
 
-    private Map<String, ChampionWinRateDto> calculateWinRate(List<Match> matchList, String puuid) {
+    private Map<String, ChampionWinRateDto> calculateWinRate(List<Match> matchList, String puuid, String championName) throws JSONException, JsonProcessingException {
         Map<String, ChampionWinRateDto> championWinRateMap = new HashMap<>();
 
         for (Match match : matchList) {
@@ -59,6 +69,8 @@ public class WinRateAnalysisService {
                     });
         }
 
+        sendToKafka(puuid, championName, championWinRateMap);
+
         return championWinRateMap.entrySet().stream()
                 .sorted(Collections.reverseOrder(Comparator.comparingDouble(o -> o.getValue().getTotalMatches())))
                 .collect(Collectors.toMap(
@@ -67,5 +79,16 @@ public class WinRateAnalysisService {
                         (oldValue, newValue) -> oldValue,
                         LinkedHashMap::new
                 ));
+
+
+    }
+
+    private void sendToKafka(String puuid, String championName, Map<String, ChampionWinRateDto> winRateMap) throws JSONException, JsonProcessingException {
+        JSONObject msgData = new JSONObject();
+        msgData.put("puuid", puuid);
+        msgData.put("championName", championName);
+        msgData.put("winRateMap", objectMapper.writeValueAsString(winRateMap));
+
+        kafkaTemplate.send(TOPIC, msgData.toString(4) );
     }
 }

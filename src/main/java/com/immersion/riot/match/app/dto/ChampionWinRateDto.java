@@ -20,7 +20,7 @@ public class ChampionWinRateDto {
         wins += count;
     }
 
-    public double getWinRate() {
+    public double calcWinRate() {
         if (totalMatches == 0) {
             return 0.0;
         }
