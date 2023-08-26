@@ -26,20 +26,23 @@ public class UserRankService {
         }
 
         if(summonerRank.isEmpty()) {
-            LeagueEntryResponse soloRank = new LeagueEntryResponse("RANKED_SOLO_5X5", "Unranked", "", 0);
-            LeagueEntryResponse flexRank = new LeagueEntryResponse("RANKED_FLEX_SR", "Unranked", "", 0);
+            LeagueEntryResponse soloRank = new LeagueEntryResponse("RANKED_SOLO_5x5", "", "Unranked", 0);
+            LeagueEntryResponse flexRank = new LeagueEntryResponse("RANKED_FLEX_SR", "", "Unranked", 0);
             summonerRank.add(soloRank);
             summonerRank.add(flexRank);
         }
-
-        if(summonerRank.size() == 1) {
+        else if(summonerRank.size() == 1) {
             if (summonerRank.get(0).getQueueType().equals("RANKED_SOLO_5x5")) {
-                LeagueEntryResponse flexRank = new LeagueEntryResponse("RANKED_FLEX_SR", "Unranked", "", 0);
+                LeagueEntryResponse flexRank = new LeagueEntryResponse("RANKED_FLEX_SR", "", "Unranked", 0);
                 summonerRank.add(flexRank);
             } else if (summonerRank.get(0).getQueueType().equals("RANKED_FLEX_SR")) {
-                LeagueEntryResponse soloRank = new LeagueEntryResponse("RANKED_SOLO_5X5", "Unranked", "", 0);
+                LeagueEntryResponse soloRank = new LeagueEntryResponse("RANKED_SOLO_5x5", "", "Unranked", 0);
                 summonerRank.add(soloRank);
             }
+        }
+        else if(summonerRank.get(0).getQueueType().equals("RANKED_SOLO_5x5") || !(summonerRank.get(0).getQueueType().equals("RANKED_FLEX_SR"))) {
+            LeagueEntryResponse flexRank = new LeagueEntryResponse("RANKED_FLEX_SR", "", "Unranked", 0);
+            summonerRank.set(1, flexRank);
         }
 
         return summonerRank;
