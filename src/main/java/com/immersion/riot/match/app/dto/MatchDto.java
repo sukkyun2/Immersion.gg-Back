@@ -11,6 +11,7 @@ public record MatchDto(
         LocalDateTime gameStartTime,
         LocalDateTime gameEndTime,
         long gameDuration,
+        int queueId,
         List<ParticipantDto> participants,
         String winTeam
 ) {
@@ -27,6 +28,7 @@ public record MatchDto(
                 entity.getGameStartTime(),
                 entity.getGameEndTime(),
                 entity.getGameDuration(),
+                entity.getQueueId(),
                 entity.getParticipants().stream()
                         .map(ParticipantDto::from)
                         .toList(),

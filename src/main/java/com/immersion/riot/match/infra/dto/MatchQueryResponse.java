@@ -15,6 +15,7 @@ public record MatchQueryResponse(
                 metadata().matchId(),
                 info.gameStartTimestamp().toLocalDateTime(),
                 info.gameDuration(),
+                info.queueId(),
                 info.gameEndTimestamp().toLocalDateTime(),
                 info.participants().stream().map(participantDto ->
                         Participant.of(
@@ -46,7 +47,8 @@ public record MatchQueryResponse(
                                 participantDto.summoner2Id(),
                                 participantDto.perks().styles().get(0).style(),
                                 participantDto.perks().styles().get(1).style(),
-                                participantDto.totalMinionsKilled()
+                                participantDto.totalMinionsKilled(),
+                                info.queueId()
                         )
                 ).collect(Collectors.toList()),
                 getWinTeamId()

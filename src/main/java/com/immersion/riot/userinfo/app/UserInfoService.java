@@ -1,5 +1,6 @@
 package com.immersion.riot.userinfo.app;
 
+import com.immersion.riot.userRating.app.UserRatingViewService;
 import com.immersion.riot.userinfo.infra.dto.SummonerDTO;
 import com.immersion.riot.userinfo.infra.client.UserInfoClient;
 import com.immersion.riot.match.app.service.ImageUrlBuilderService;
@@ -12,6 +13,7 @@ public class UserInfoService {
 
     private final UserInfoClient userInfoClient;
     private final UserRankService userRankService;
+    private final UserRatingViewService userRatingViewService;
     private final ImageUrlBuilderService iconImageUrlBuilderService;
 
     public UserInfoResponse getSummonerInfo(String summonerName) {
@@ -24,6 +26,7 @@ public class UserInfoService {
         userInfo.setPuuid(summonerDTO.puuid());
         userInfo.setSummonerLevel(summonerDTO.summonerLevel());
         userInfo.setRank(userRankService.getSummonerRank(summonerDTO.id()));
+        userInfo.setUserRatingAverage(userRatingViewService.getUserRatingAverage(summonerDTO.puuid()));
 
         return userInfo;
     }

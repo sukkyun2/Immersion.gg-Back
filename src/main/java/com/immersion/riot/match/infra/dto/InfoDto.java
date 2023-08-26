@@ -8,6 +8,7 @@ public record InfoDto(
         Timestamp gameStartTimestamp,
         long gameDuration,
         Timestamp gameEndTimestamp,
+        int queueId,
         List<ParticipantDto> participants,
         List<TeamDto> teams
 ) {

@@ -81,6 +81,11 @@ public class ImageUrlBuilderService {
     }
 
     public String getItemImageUrl(int itemKey) {
+
+        if (itemKey == 0) {
+            return null;
+        }
+
         return CDN_URL + VERSION + "/img/item/" + itemKey + ".png";
     }
     

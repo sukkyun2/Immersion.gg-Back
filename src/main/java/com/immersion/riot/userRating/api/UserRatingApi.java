@@ -31,7 +31,7 @@ public class UserRatingApi {
 
     @GetMapping("/ingame/rating/{puuid}")
     public ResponseEntity<Double> getInGameRating(@PathVariable String puuid) {
-        double InGameRating = userRatingViewService.getInGameRatings(puuid);
+        double InGameRating = userRatingViewService.getUserRatingAverage(puuid);
         return ResponseEntity.ok(InGameRating);
     }
 }

@@ -15,8 +15,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
             "WHERE p.puuid = :puuid " +
             "GROUP BY p.championName, p.championId " +
             "ORDER BY COUNT(p) DESC")
-    List<ChampionStatsDto> getChampionStatsByPuuid(String puuid); //TODO : 페이징 필요(?)
-
+    List<ChampionStatsDto> getChampionStatsByPuuid(String puuid);
 
     @Query("SELECT NEW com.immersion.riot.match.app.dto.ChampionStatsDto(p.championName, p.championId, COUNT(p), SUM(CASE WHEN p.win = true THEN 1 ELSE 0 END)," +
             " SUM(CASE WHEN p.win = false THEN 1 ELSE 0 END), AVG(p.kills), AVG(p.deaths), AVG(p.assists)) " +
@@ -24,6 +23,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
             "WHERE p.summonerName = LOWER(:summonerName) " +
             "GROUP BY p.championName, p.championId " +
             "ORDER BY COUNT(p) DESC")
-    List<ChampionStatsDto> getChampionStatsBySummonerName(String summonerName); //TODO : 페이징 필요(?)
+    List<ChampionStatsDto> getChampionStatsBySummonerName(String summonerName);
 
+    List<Participant> findAllByPuuidAndChampionId(String puuid, int championId);
 }
