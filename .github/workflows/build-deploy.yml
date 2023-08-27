@@ -40,7 +40,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: ${{ secrets.GHCR_TOKKEN }}
           # 우리가 방금 복사해서 setting secrets 에 붙여줬던 token 이다. 이름을 기억해 넣어주자.
           # 우리의 ghcr.io 에 접근하기 위함이다.
 
@@ -88,3 +88,4 @@ jobs:
           script: |
             docker compose stop ${{ env.CONTAINER_NAME }} && docker rm ${{ env.CONTAINER_NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
             docker compose up -d
+
