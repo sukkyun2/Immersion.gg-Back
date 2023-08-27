@@ -86,5 +86,5 @@ jobs:
           password: ${{ secrets.REMOTE_SSH_KEY }}
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
-            docker-compose stop ${{ env.CONTAINER_NAME }} && docker rm ${{ env.CONTAINER_NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
-            docker-compose up -d
+            docker compose stop ${{ env.CONTAINER_NAME }} && docker rm ${{ env.CONTAINER_NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
+            docker compose up -d
