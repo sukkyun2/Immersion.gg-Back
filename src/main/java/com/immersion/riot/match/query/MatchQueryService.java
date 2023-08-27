@@ -55,6 +55,8 @@ public class MatchQueryService {
                                 participantDto.win(),
                                 participantDto.visionScore(),
                                 participantDto.totalMinionsKilled(),
+                                participantDto.totalDamageDealtToChampions(),
+                                participantDto.totalDamageTaken(),
                                 imageUrlBuilderService.getSpellImageUrl(participantDto.summoner1Id()),
                                 imageUrlBuilderService.getSpellImageUrl(participantDto.summoner2Id()),
                                 imageUrlBuilderService.getPerkImageUrl(participantDto.perks().styles().get(0).style()),
@@ -67,7 +69,11 @@ public class MatchQueryService {
                                 imageUrlBuilderService.getItemImageUrl(participantDto.item5())
                         )).toList(),
                 matchDto.winTeam(),
-                QueueType.ofQueueId(matchDto.queueId())
+                QueueType.ofQueueId(matchDto.queueId()),
+                matchDto.teams().stream().map(
+                        TeamResponse::from
+                ).toList()
+
         ));
     }
 

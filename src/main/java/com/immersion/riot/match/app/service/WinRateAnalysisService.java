@@ -1,12 +1,22 @@
 package com.immersion.riot.match.app.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.immersion.riot.common.app.NoDataException;
+import com.immersion.riot.match.app.dto.AnalyzedWinrateResponse;
 import com.immersion.riot.match.app.dto.ChampionWinRateResponse;
+import com.immersion.riot.match.domain.entity.GptAnswer;
+import com.immersion.riot.match.domain.entity.GptAnswerId;
 import com.immersion.riot.match.domain.entity.Match;
 import com.immersion.riot.match.domain.entity.Participant;
+import com.immersion.riot.match.domain.repository.GptAnswerRepository;
 import com.immersion.riot.match.domain.repository.MatchRepository;
 import com.immersion.riot.match.app.dto.ChampionWinRateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.json.JSONObject;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +31,17 @@ public class WinRateAnalysisService {
 
     private final MatchRepository matchRepository;
     private final ImageUrlBuilderService imageUrlBuilderService;
+    private final GptAnswerRepository gptAnswerRepository;
 
-    public Map<String, ChampionWinRateResponse> getAnalyzedWinRate(String puuid, String championName) {
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
+
+    private static final String TOPIC = "chatGpt";
+
+    public AnalyzedWinrateResponse getAnalyzedWinRate(String puuid, String championName) {
         List<Match> matchList = matchRepository.getMatchIdByPuuidAndChampionId(puuid, championName);
 
-        return calculateWinRate(matchList, puuid).entrySet().stream()
+        LinkedHashMap<String, ChampionWinRateResponse> WinRateMap = calculateWinRate(matchList, puuid, championName).entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> ChampionWinRateResponse.from(
@@ -34,9 +50,20 @@ public class WinRateAnalysisService {
                         (oldValue, newValue) -> oldValue,
                         LinkedHashMap::new
                 ));
+
+        return AnalyzedWinrateResponse.of(WinRateMap, getGptAnswer(puuid, championName));
+
     }
 
-    private Map<String, ChampionWinRateDto> calculateWinRate(List<Match> matchList, String puuid) {
+    private String getGptAnswer(String puuid, String championName) {
+        GptAnswerId pk = new GptAnswerId(puuid, championName);
+        GptAnswer gptAnswer = gptAnswerRepository.findById(pk).orElseThrow(
+                () -> new NoDataException("승률 통계를 분석 중입니다. 잠시 후 다시 시도해주세요.")
+        );
+        return gptAnswer.getContent();
+    }
+
+    private Map<String, ChampionWinRateDto> calculateWinRate(List<Match> matchList, String puuid, String championName) {
         Map<String, ChampionWinRateDto> championWinRateMap = new HashMap<>();
 
         for (Match match : matchList) {
@@ -59,6 +86,8 @@ public class WinRateAnalysisService {
                     });
         }
 
+        sendToKafka(puuid, championName, championWinRateMap);
+
         return championWinRateMap.entrySet().stream()
                 .sorted(Collections.reverseOrder(Comparator.comparingDouble(o -> o.getValue().getTotalMatches())))
                 .collect(Collectors.toMap(
@@ -67,5 +96,21 @@ public class WinRateAnalysisService {
                         (oldValue, newValue) -> oldValue,
                         LinkedHashMap::new
                 ));
+
+
+    }
+
+    private void sendToKafka(String puuid, String championName, Map<String, ChampionWinRateDto> winRateMap) {
+        JSONObject msgData = new JSONObject();
+        msgData.put("puuid", puuid);
+        msgData.put("championName", championName);
+        try {
+            msgData.put("winRateMap", objectMapper.writeValueAsString(winRateMap));
+        } catch (JsonProcessingException e) {
+            e.getStackTrace();
+        }
+
+        kafkaTemplate.send(TOPIC, msgData.toString(4) );
+        log.info("Kafka Producer sent data from the WinRateAnalysisService - puuid : {}", puuid);
     }
 }
