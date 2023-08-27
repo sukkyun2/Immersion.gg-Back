@@ -2,6 +2,7 @@ package com.immersion.riot.match.infra.dto;
 
 import com.immersion.riot.match.domain.entity.Match;
 import com.immersion.riot.match.domain.entity.Participant;
+import com.immersion.riot.match.domain.entity.Team;
 
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public record MatchQueryResponse(
                                 participantDto.item6(),
                                 participantDto.champLevel(),
                                 participantDto.championId(),
-                                participantDto.championName().toLowerCase(), //TODO : 챔피언 이름 한국어로 저장?
+                                participantDto.championName().toLowerCase(),
                                 participantDto.puuid(),
                                 participantDto.summonerId(),
                                 participantDto.summonerName().toLowerCase(),
@@ -51,12 +52,18 @@ public record MatchQueryResponse(
                                 info.queueId()
                         )
                 ).collect(Collectors.toList()),
-                getWinTeamId()
+                getWinTeamId(),
+                info.teams().stream().map(teamDto ->
+                        Team.of(metadata.matchId(),
+                                teamDto.teamId(),
+                                teamDto.objectives().baron().kills(),
+                                teamDto.objectives().dragon().kills()))
+                        .collect(Collectors.toList())
         );
     }
 
     private String getWinTeamId() {
-        TeamDto team1 = info.teams().get(0);
+        TeamQeuryDto team1 = info.teams().get(0);
 
         if (team1.win()) return team1.teamId();
 

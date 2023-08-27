@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@IdClass(GptAnswerPK.class)
+@IdClass(GptAnswerId.class)
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
 public class GptAnswer {

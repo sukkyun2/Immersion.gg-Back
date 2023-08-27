@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GptAnswerPK implements Serializable {
+public class GptAnswerId implements Serializable {
 
     private String puuid;
 

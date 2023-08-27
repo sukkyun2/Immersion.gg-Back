@@ -6,7 +6,7 @@ import com.immersion.riot.common.app.NoDataException;
 import com.immersion.riot.match.app.dto.AnalyzedWinrateResponse;
 import com.immersion.riot.match.app.dto.ChampionWinRateResponse;
 import com.immersion.riot.match.domain.entity.GptAnswer;
-import com.immersion.riot.match.domain.entity.GptAnswerPK;
+import com.immersion.riot.match.domain.entity.GptAnswerId;
 import com.immersion.riot.match.domain.entity.Match;
 import com.immersion.riot.match.domain.entity.Participant;
 import com.immersion.riot.match.domain.repository.GptAnswerRepository;
@@ -15,7 +15,6 @@ import com.immersion.riot.match.app.dto.ChampionWinRateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -57,7 +56,7 @@ public class WinRateAnalysisService {
     }
 
     private String getGptAnswer(String puuid, String championName) {
-        GptAnswerPK pk = new GptAnswerPK(puuid, championName);
+        GptAnswerId pk = new GptAnswerId(puuid, championName);
         GptAnswer gptAnswer = gptAnswerRepository.findById(pk).orElseThrow(
                 () -> new NoDataException("승률 통계를 분석 중입니다. 잠시 후 다시 시도해주세요.")
         );

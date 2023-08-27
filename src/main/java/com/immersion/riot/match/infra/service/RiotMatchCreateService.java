@@ -40,5 +40,6 @@ public class RiotMatchCreateService {
 
         participantRepository.saveAll(participants);
         matchRepository.saveAll(matchList);
+
     }
 }
