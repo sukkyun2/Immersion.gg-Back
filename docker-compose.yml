@@ -8,7 +8,7 @@ services:
       networks:
         - app-tier
       depends_on:
-        - immersion-redis
+        - redis
         - kafka
       image: jiwonkkang/immersion-riot-app
       environment:
@@ -39,7 +39,7 @@ services:
         ports:
             - "81:8081"
         restart: always
-  immersion-redis:
+  redis:
     container_name: immersion-redis
     networks:
       - app-tier
@@ -50,6 +50,7 @@ services:
     ports:
       - "6379:6379"
   zookeeper:
+    container_name: immersion-zookeeper
     image: confluentinc/cp-zookeeper:latest
     networks:
       - app-tier
@@ -62,6 +63,7 @@ services:
     ports:
       - "22181:2181"
   kafka:
+    container_name: immersion-kafka
     image: confluentinc/cp-kafka:latest
     networks:
       - app-tier
@@ -78,6 +80,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
   init-kafka:
+    container_name: immersion-init-kafka
     image: confluentinc/cp-kafka:latest
     networks:
       - app-tier
