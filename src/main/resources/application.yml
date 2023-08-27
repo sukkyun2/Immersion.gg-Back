@@ -23,16 +23,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
-  data:
-    redis:
-      host: localhost
-      port: 6379
-  kafka:
-    producer:
-      bootstrap-servers: kafka:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
 cors:
   allow-methods : ['GET', 'POST', 'PUT', 'DELETE']
   allow-origins : ['http://localhost:3000']

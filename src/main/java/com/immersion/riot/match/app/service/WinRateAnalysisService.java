@@ -41,7 +41,7 @@ public class WinRateAnalysisService {
     public AnalyzedWinrateResponse getAnalyzedWinRate(String puuid, String championName) {
         List<Match> matchList = matchRepository.getMatchIdByPuuidAndChampionId(puuid, championName);
 
-        LinkedHashMap<String, ChampionWinRateResponse> WinRateMap = calculateWinRate(matchList, puuid, championName).entrySet().stream()
+        LinkedHashMap<String, ChampionWinRateResponse> winRateMap = calculateWinRate(matchList, puuid, championName).entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> ChampionWinRateResponse.from(
@@ -51,7 +51,15 @@ public class WinRateAnalysisService {
                         LinkedHashMap::new
                 ));
 
-        return AnalyzedWinrateResponse.of(WinRateMap, getGptAnswer(puuid, championName));
+        try {
+            String gptAnswer = getGptAnswer(puuid, championName);
+            return AnalyzedWinrateResponse.of(winRateMap, gptAnswer);
+        } catch (NoDataException e) {
+            log.info("아직 승률 데이터가 DB에 반영되지 않았습니다.");
+            return AnalyzedWinrateResponse.of(winRateMap, "");
+        }
+
+
 
     }
 
@@ -106,11 +114,10 @@ public class WinRateAnalysisService {
         msgData.put("championName", championName);
         try {
             msgData.put("winRateMap", objectMapper.writeValueAsString(winRateMap));
+            kafkaTemplate.send(TOPIC, msgData.toString(4) );
+            log.info("Kafka Producer sent data from the WinRateAnalysisService - puuid : {}", puuid);
         } catch (JsonProcessingException e) {
             e.getStackTrace();
         }
-
-        kafkaTemplate.send(TOPIC, msgData.toString(4) );
-        log.info("Kafka Producer sent data from the WinRateAnalysisService - puuid : {}", puuid);
     }
 }
