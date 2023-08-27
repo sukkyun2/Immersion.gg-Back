@@ -10,7 +10,7 @@ services:
       depends_on:
         - redis
         - kafka
-      image: jiwonkkang/immersion-riot-app
+      image: ghcr.io/jiwonkkang/immersion-riot-app
       environment:
         - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
         - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
@@ -29,7 +29,7 @@ services:
           - app-tier
         depends_on:
           - immersion-riot-app
-        image: jiwonkkang/immersion-gpt-app
+        image: ghcr.io/jiwonkkang/immersion-gpt-app
         environment:
             - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
             - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
@@ -43,14 +43,11 @@ services:
     container_name: immersion-redis
     networks:
       - app-tier
-    build:
-      dockerfile: Dockerfile
-      context: ./redis
-    image: jiwonkkang/immersion-redis
+    image: redis:latest
     ports:
       - "6379:6379"
   zookeeper:
-    container_name: immersion-zookeeper
+    container_name: immersion-zookeeperd
     image: confluentinc/cp-zookeeper:latest
     networks:
       - app-tier
