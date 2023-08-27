@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class UserInfoService {
 
     private final UserInfoClient userInfoClient;
-    private final UserRankService userRankService;
     private final UserRatingViewService userRatingViewService;
     private final ImageUrlBuilderService iconImageUrlBuilderService;
 
@@ -25,7 +24,6 @@ public class UserInfoService {
         userInfo.setName(summonerDTO.name());
         userInfo.setPuuid(summonerDTO.puuid());
         userInfo.setSummonerLevel(summonerDTO.summonerLevel());
-        userInfo.setRank(userRankService.getSummonerRank(summonerDTO.id()));
         userInfo.setUserRatingAverage(userRatingViewService.getUserRatingAverage(summonerDTO.puuid()));
 
         return userInfo;

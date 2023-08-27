@@ -2,8 +2,6 @@ package com.immersion.riot.userinfo.app;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class UserInfoResponse {
     private String profileImageUrl;
@@ -11,6 +9,5 @@ public class UserInfoResponse {
     private String id;
     private String puuid;
     private long summonerLevel;
-    private List<LeagueEntryResponse> rank;
     private double userRatingAverage;
 }
