@@ -1,10 +1,97 @@
 version: "3.8"
+networks:
+  app-tier:
+    driver: bridge
 services:
+  immersion-riot-app:
+      container_name: immersion-riot-app
+      networks:
+        - app-tier
+      depends_on:
+        - immersion-redis
+        - kafka
+      image: jiwonkkang/immersion-riot-app
+      environment:
+        - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
+        - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
+        - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+        - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+        - SPRING_REDIS_HOST=${SPRING_REDIS_HOST}
+        - SPRING_REDIS_PORT=${SPRING_REDIS_PORT}
+        - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+        - RIOT_API_KEY=${RIOT_API_KEY}
+      ports:
+        - "80:8080"
+      restart: always
+  immersion-gpt-app:
+        container_name: immersion-gpt-app
+        networks:
+          - app-tier
+        depends_on:
+          - immersion-riot-app
+        image: jiwonkkang/immersion-gpt-app
+        environment:
+            - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
+            - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
+            - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+            - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+            - GPT_API_KEY=${GPT_API_KEY}
+        ports:
+            - "81:8081"
+        restart: always
   immersion-redis:
     container_name: immersion-redis
+    networks:
+      - app-tier
     build:
       dockerfile: Dockerfile
       context: ./redis
     image: jiwonkkang/immersion-redis
     ports:
       - "6379:6379"
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    networks:
+      - app-tier
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+      - "22181:2181"
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    networks:
+      - app-tier
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+  init-kafka:
+    image: confluentinc/cp-kafka:latest
+    networks:
+      - app-tier
+    depends_on:
+      - kafka
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka:9092 --list
+      
+      echo -e 'Creating kafka topics'
+      kafka-topics --create --if-not-exists --topic chatGpt --bootstrap-server kafka:9092 --replication-factor 1 --partitions 1
+      
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:9092 --list
+      "

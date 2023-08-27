@@ -2,9 +2,11 @@ package com.immersion.riot.match.app.dto;
 
 import com.immersion.riot.match.domain.entity.Match;
 import com.immersion.riot.match.infra.dto.ParticipantDto;
+import com.immersion.riot.match.infra.dto.TeamQeuryDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record MatchDto(
         String MatchId,
@@ -13,7 +15,9 @@ public record MatchDto(
         long gameDuration,
         int queueId,
         List<ParticipantDto> participants,
-        String winTeam
+        String winTeam,
+        List<TeamDto> teams
+
 ) {
 
     public String formatGameDuration() {
@@ -32,7 +36,11 @@ public record MatchDto(
                 entity.getParticipants().stream()
                         .map(ParticipantDto::from)
                         .toList(),
-                entity.getWinTeam()
+                entity.getWinTeam(),
+                entity.getTeams().stream()
+                        .map(TeamDto::from)
+                        .toList()
         );
     }
+
 }

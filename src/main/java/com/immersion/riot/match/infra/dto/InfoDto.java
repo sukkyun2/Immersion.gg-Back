@@ -1,7 +1,6 @@
 package com.immersion.riot.match.infra.dto;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record InfoDto(
@@ -10,6 +9,6 @@ public record InfoDto(
         Timestamp gameEndTimestamp,
         int queueId,
         List<ParticipantDto> participants,
-        List<TeamDto> teams
+        List<TeamQeuryDto> teams
 ) {
 }

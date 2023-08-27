@@ -11,15 +11,17 @@ public record MatchResponse(
         String gameDuration,
         QueueType queueType,
         List<ParticipantResponse> participants,
-        String winTeam
+        String winTeam,
+        List<TeamResponse> teams
 ) {
-    public static MatchResponse of(LocalDateTime gameStartTime, String gameDuration, List<ParticipantResponse> participants, String winTeam, QueueType queueType) {
+    public static MatchResponse of(LocalDateTime gameStartTime, String gameDuration, List<ParticipantResponse> participants, String winTeam, QueueType queueType, List<TeamResponse> teams) {
         return new MatchResponse(
                 gameStartTime,
                 gameDuration,
                 queueType,
                 participants,
-                winTeam
+                winTeam,
+                teams
         );
     }
 
