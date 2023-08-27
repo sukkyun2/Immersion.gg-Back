@@ -69,7 +69,7 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           envs: GHCR_TOKEN
           script: |
-            echo ${{ secrets.GHCR_TOKKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo ${{ env.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Deploy
         uses: appleboy/ssh-action@master # 추적을 위해 스텝을 나누어놨지만 한스크립트에서 전부 돌려도댐
