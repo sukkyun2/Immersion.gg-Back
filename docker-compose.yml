@@ -10,7 +10,7 @@ services:
       depends_on:
         - redis
         - kafka
-      image: ghcr.io/jiwonkkang/immersion-riot-app
+      image: ghcr.io/jiwonkkang/immersion-riot-app:latest
       environment:
         - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
         - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
@@ -29,7 +29,7 @@ services:
           - app-tier
         depends_on:
           - immersion-riot-app
-        image: ghcr.io/jiwonkkang/immersion-gpt-app
+        image: jiwonkkang/immersion-gpt-app:latest
         environment:
             - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
             - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
