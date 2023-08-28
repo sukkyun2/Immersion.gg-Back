@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserInfoApi {
 
     private final UserInfoService userInfoService;
-    private final UserRankService userRankService;
 
     @GetMapping("/users/{summonerName}")
     public ResponseEntity<UserInfoResponse> getUserInfo(@PathVariable String summonerName) {
@@ -23,19 +22,5 @@ public class UserInfoApi {
         UserInfoResponse userInfoResponse = userInfoService.getSummonerInfo(summonerName);
 
         return ResponseEntity.ok(userInfoResponse);
-    }
-
-    @GetMapping("/users/{summonerName}/solorank")
-    public ResponseEntity<LeagueEntryResponse> getSoloRank(@PathVariable String summonerName) {
-
-        LeagueEntryResponse soloRankResponse = userRankService.getUserSoloRank(summonerName);
-        return ResponseEntity.ok(soloRankResponse);
-    }
-
-    @GetMapping("/users/{summonerName}/flexrank")
-    public ResponseEntity<LeagueEntryResponse> getFlexRank(@PathVariable String summonerName) {
-
-        LeagueEntryResponse flexRankResponse = userRankService.getUserFlexRank(summonerName);
-        return ResponseEntity.ok(flexRankResponse);
     }
 }

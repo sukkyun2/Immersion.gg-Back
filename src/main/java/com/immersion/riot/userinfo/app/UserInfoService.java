@@ -7,6 +7,8 @@ import com.immersion.riot.match.app.service.ImageUrlBuilderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserInfoService {
@@ -14,11 +16,17 @@ public class UserInfoService {
     private final UserInfoClient userInfoClient;
     private final UserRatingViewService userRatingViewService;
     private final ImageUrlBuilderService iconImageUrlBuilderService;
+    private final UserRankService userRankService;
 
     public UserInfoResponse getSummonerInfo(String summonerName) {
         SummonerDTO summonerDTO = userInfoClient.getSummoner(summonerName);
         UserInfoResponse userInfo = new UserInfoResponse();
 
+        LeagueEntryResponse userSoloRank = userRankService.getUserSoloRank(summonerName);
+        LeagueEntryResponse userFlexRank = userRankService.getUserFlexRank(summonerName);
+
+
+        userInfo.setTiers(List.of(userSoloRank, userFlexRank));
         userInfo.setProfileImageUrl(iconImageUrlBuilderService.getProfileImageUrl(summonerDTO.profileIconId()));
         userInfo.setId(summonerDTO.id());
         userInfo.setName(summonerDTO.name());
