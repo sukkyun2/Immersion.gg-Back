@@ -76,8 +76,8 @@ public class ImageUrlBuilderService {
     }
 
     public String getChampionImageUrlByName(String championName) {
-
-        return CDN_URL + VERSION + "/img/champion/" + championName + ".png";
+        String cap = championName.substring(0, 1).toUpperCase() + championName.substring(1);
+        return CDN_URL + VERSION + "/img/champion/" + cap + ".png";
     }
 
     public String getItemImageUrl(int itemKey) {
