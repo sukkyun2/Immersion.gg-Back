@@ -4,41 +4,41 @@ networks:
     driver: bridge
 services:
   immersion-riot-app:
-      container_name: immersion-riot-app
-      networks:
-        - app-tier
-      depends_on:
-        - redis
-        - kafka
-      image: ghcr.io/jiwonkkang/immersion-riot-app:latest
-      environment:
-        - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
-        - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
-        - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-        - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-        - SPRING_REDIS_HOST=${SPRING_REDIS_HOST}
-        - SPRING_REDIS_PORT=${SPRING_REDIS_PORT}
-        - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-        - RIOT_API_KEY=${RIOT_API_KEY}
-      ports:
-        - "80:8080"
-      restart: always
+    container_name: immersion-riot-app
+    networks:
+      - app-tier
+    depends_on:
+      - redis
+      - kafka
+    image: ghcr.io/jiwonkkang/immersion-riot-app:latest
+    environment:
+      - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
+      - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_REDIS_HOST=${SPRING_REDIS_HOST}
+      - SPRING_REDIS_PORT=${SPRING_REDIS_PORT}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - RIOT_API_KEY=${RIOT_API_KEY}
+    ports:
+      - "8080:8080"
+    restart: always
   immersion-gpt-app:
-        container_name: immersion-gpt-app
-        networks:
-          - app-tier
-        depends_on:
-          - immersion-riot-app
-        image: ghcr.io/jiwonkkang/immersion-gpt-app:latest
-        environment:
-            - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
-            - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
-            - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-            - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-            - GPT_API_KEY=${GPT_API_KEY}
-        ports:
-            - "81:8081"
-        restart: always
+    container_name: immersion-gpt-app
+    networks:
+      - app-tier
+    depends_on:
+      - immersion-riot-app
+    image: ghcr.io/jiwonkkang/immersion-gpt-app:latest
+    environment:
+      - SPRING_DATASOURCE_HOST=${SPRING_DATASOURCE_HOST}
+      - SPRING_DATASOURCE_PORT=${SPRING_DATASOURCE_PORT}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - GPT_API_KEY=${GPT_API_KEY}
+    ports:
+      - "8081:8081"
+    restart: always
   redis:
     container_name: immersion-redis
     networks:
@@ -47,7 +47,7 @@ services:
     ports:
       - "6379:6379"
   zookeeper:
-    container_name: immersion-zookeeperd
+    container_name: immersion-zookeeper
     image: confluentinc/cp-zookeeper:latest
     networks:
       - app-tier
@@ -88,10 +88,36 @@ services:
       "
       # blocks until kafka is reachable
       kafka-topics --bootstrap-server kafka:9092 --list
-      
+
       echo -e 'Creating kafka topics'
       kafka-topics --create --if-not-exists --topic chatGpt --bootstrap-server kafka:9092 --replication-factor 1 --partitions 1
-      
+
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka:9092 --list
       "
+  nginx:
+    image: nginx:1.15-alpine
+    networks:
+      - app-tier
+    depends_on:
+      - immersion-riot-app
+    restart: unless-stopped
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+      - ./data/build:/usr/share/nginx/html # react deploy
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot
+    networks:
+      - app-tier
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
