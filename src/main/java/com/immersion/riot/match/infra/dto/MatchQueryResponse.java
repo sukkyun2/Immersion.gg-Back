@@ -34,7 +34,7 @@ public record MatchQueryResponse(
                                 participantDto.item6(),
                                 participantDto.champLevel(),
                                 participantDto.championId(),
-                                participantDto.championName().toLowerCase(),
+                                participantDto.championName(),
                                 participantDto.puuid(),
                                 participantDto.summonerId(),
                                 participantDto.summonerName().toLowerCase(),
