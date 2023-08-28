@@ -14,7 +14,8 @@ public enum QueueType {
     RANKED_SOLO(420, "솔로랭크"),
     BLIND(430, "비공개선택"),
     RANKED_FLEX(440, "자유랭크"),
-    HOWLING_ABYSS(450, "칼바람나락");
+    HOWLING_ABYSS(450, "칼바람나락"),
+    UNDEFINED(999, "새로나온 모드");
 
     private Integer id;
     private String name;

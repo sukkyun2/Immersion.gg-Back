@@ -69,12 +69,21 @@ public class MatchQueryService {
                                 imageUrlBuilderService.getItemImageUrl(participantDto.item5())
                         )).toList(),
                 matchDto.winTeam(),
-                QueueType.ofQueueId(matchDto.queueId()),
+                getQueueType(matchDto.queueId()),
                 matchDto.teams().stream().map(
                         TeamResponse::from
                 ).toList()
 
         ));
+    }
+
+    private QueueType getQueueType(int queueId) {
+        try {
+            return QueueType.ofQueueId(queueId);
+        } catch (IllegalArgumentException e) {
+            log.info("예상치 못한 QueueId 입니다. {}", queueId);
+            return QueueType.UNDEFINED;
+        }
     }
 
 }
